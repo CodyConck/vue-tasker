@@ -2,8 +2,8 @@
   <div class="container">
     <!-- title "task tracker" is passed as prop to component -->
     <Header title="Task Tracker" />
-    <!-- this component will be dynamic and change as we update tasts -->
-    <Tasks :tasks="tasks" />
+    <!-- this component will be dynamic and change as we update tasks -->
+    <Tasks @delete-task="deleteTask" :tasks="tasks" />
   </div>
 </template>
 
@@ -22,6 +22,16 @@ export default {
     return {
       tasks: [],
     };
+  },
+  // emitted up via task.vue and tasks.vue
+  methods: {
+    deleteTask(id) {
+      // adds confirm warning if deleting task
+      if (confirm("Are you sure?")) {
+        // using filter() passing in task, filter takes a function. we are telling it to filter the task ids and bring back the tasks with an id that dont match the one we just clicked to delete
+        this.tasks = this.tasks.filter((task) => task.id !== id);
+      }
+    },
   },
   created() {
     this.tasks = [
